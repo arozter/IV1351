@@ -1,16 +1,8 @@
---Get siblings
---SELECT p1.first_name, p1.last_name, p2.first_name, p2.last_name
-FROM person AS p1
-INNER JOIN student AS s ON p1.id=s.person_id
-INNER JOIN sibling_discount AS sd ON s.student_id=sd.student_id
-INNER JOIN student AS s2 ON sd.sibling_id=s2.student_id
-INNER JOIN person AS p2 ON s2.person_id=p2.id;
-
 
 --Number off lesson/month
 SELECT 
 EXTRACT(MONTH FROM date) AS month,
-COUNT(lesson_id) AS total,-- individual_id, ensamble_id, group_id
+COUNT(lesson_id) AS total,
 SUM(CASE WHEN lesson.individual_id IS NULL THEN 0 ELSE 1 END) AS induvidual_lesson,
 SUM(CASE WHEN lesson.group_id  IS NULL THEN 0 ELSE 1 END) AS group_lesson,
 SUM(CASE WHEN lesson.ensamble_id IS NULL THEN 0 ELSE 1 END) AS ensemble_lesson

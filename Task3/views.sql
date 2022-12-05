@@ -4,7 +4,7 @@
 CREATE VIEW lessons AS 
 SELECT 
 EXTRACT(MONTH FROM date) AS month,
-COUNT(lesson_id) AS total,-- individual_id, ensamble_id, group_id
+COUNT(lesson_id) AS total,
 SUM(CASE WHEN lesson.individual_id IS NULL THEN 0 ELSE 1 END) AS induvidual_lesson,
 SUM(CASE WHEN lesson.group_id  IS NULL THEN 0 ELSE 1 END) AS group_lesson,
 SUM(CASE WHEN lesson.ensamble_id IS NULL THEN 0 ELSE 1 END) AS ensemble_lesson
@@ -22,7 +22,7 @@ GROUP BY sibling
 UNION SELECT COUNT (*), 0 FROM student WHERE student_id NOT IN (SELECT student_id FROM sibling_discount);
 
 --Instructor lessons
-CREATE VIEW instructor AS
+CREATE VIEW instructorlesson AS
 SELECT COUNT(*) AS instructor_lessons, instructor_id
 FROM schedule
 NATURAL JOIN instructor
@@ -30,7 +30,7 @@ WHERE (SELECT EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM current_date))
 GROUP BY instructor_id;
 
 --List ensamble
-CREATE VIEW ensamble AS
+CREATE VIEW ensambles AS
 SELECT EXTRACT(dow FROM date) AS day, genre.genre,
 CASE WHEN max_number - COUNT(student_id) > 2  THEN  'two or more' 
 WHEN max_number - COUNT(student_id) BETWEEN 1 AND 2  THEN  'one or two' 
