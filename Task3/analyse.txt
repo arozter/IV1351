@@ -1,0 +1,16 @@
+                                                          QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=103.05..103.55 rows=200 width=64) (actual time=0.777..0.782 rows=12 loops=1)
+   Sort Key: (EXTRACT(month FROM schedule.date))
+   Sort Method: quicksort  Memory: 25kB
+   ->  HashAggregate  (cost=92.91..95.41 rows=200 width=64) (actual time=0.737..0.750 rows=12 loops=1)
+         Group Key: EXTRACT(month FROM schedule.date)
+         Batches: 1  Memory Usage: 40kB
+         ->  Hash Join  (cost=45.33..75.91 rows=1360 width=48) (actual time=0.481..0.620 rows=100 loops=1)
+               Hash Cond: (schedule.lesson_id = lesson.lesson_id)
+               ->  Seq Scan on schedule  (cost=0.00..23.60 rows=1360 width=8) (actual time=0.095..0.112 rows=100 loops=1)
+               ->  Hash  (cost=25.70..25.70 rows=1570 width=16) (actual time=0.331..0.332 rows=150 loops=1)
+                     Buckets: 2048  Batches: 1  Memory Usage: 22kB
+                     ->  Seq Scan on lesson  (cost=0.00..25.70 rows=1570 width=16) (actual time=0.172..0.224 rows=150 loops=1)
+ Planning Time: 0.753 ms
+ Execution Time: 1.446 ms
